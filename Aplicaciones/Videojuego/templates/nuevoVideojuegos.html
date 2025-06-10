@@ -1,0 +1,98 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block contenido %}
+
+<br><br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5 bg-light">
+                <h2 class="text-center text-success mb-4">Nuevo Videojuego</h2>
+                <hr class="mb-4">
+                <form id="frm_nuevo_videojuego" method="post" action="/guardarVideojuego/">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label fw-bold">Título</label>
+                        <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Ingrese el título del videojuego" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="genero" class="form-label fw-bold">Género</label>
+                        <input type="text" name="genero" id="genero" class="form-control" placeholder="Ingrese el género" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fecha_lanzamiento" class="form-label fw-bold">Fecha de lanzamiento</label>
+                        <input type="date" name="fecha_lanzamiento" id="fecha_lanzamiento" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="plataforma_principal" class="form-label fw-bold">Plataforma Principal</label>
+                        <select name="plataforma_principal" id="plataforma_principal" class="form-control" required>
+                            <option value="">Seleccione una plataforma</option>
+                            {% for plataforma in plataformas %}
+                                <option value="{{ plataforma.id }}">{{ plataforma.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="fa fa-save"></i> Guardar
+                        </button>
+                        <a href="/listaVideojuegos/" class="btn btn-danger">
+                            <i class="fa fa-times"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br>
+<script>
+    $("#frm_nuevo_videojuego").validate({
+        rules: {
+            "titulo": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "genero": {
+                required: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            "fecha_lanzamiento": {
+                required: true,
+                date: true
+            },
+            "plataforma_principal": {
+                required: true
+            }
+        },
+        messages: {
+            "titulo": {
+                required: "Por favor, ingrese el título del videojuego",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 100 caracteres"
+            },
+            "genero": {
+                required: "Por favor, ingrese el género",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 50 caracteres"
+            },
+            "fecha_lanzamiento": {
+                required: "Por favor, seleccione la fecha de lanzamiento",
+                date: "Ingrese una fecha válida"
+            },
+            "plataforma_principal": {
+                required: "Por favor, seleccione una plataforma"
+            }
+        }
+    });
+</script>
+
+{% endblock %}
