@@ -1,0 +1,103 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block contenido %} 
+
+<br><br><br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5" style="background-color: #feffff;">
+                <h2 class="text-center text-primary mb-4">Nueva Plataforma</h2>
+                <hr class="mb-4">
+                <form id="frm_nueva_plataforma" method="post" action="/guardarPlataforma/">
+                    {% csrf_token %}
+
+                    <!-- Nombre -->
+                    <div class="form-floating mb-4">
+                        <input type="text" name="nombre" id="nombre" class="form-control rounded-3 shadow-sm" placeholder="Nombre de la plataforma" required>
+                        <label for="nombre">Nombre de la plataforma</label>
+                    </div>
+
+                    <!-- Fabricante -->
+                    <div class="form-floating mb-4">
+                        <input type="text" name="fabricante" id="fabricante" class="form-control rounded-3 shadow-sm" placeholder="Fabricante" required>
+                        <label for="fabricante">Fabricante</label>
+                    </div>
+
+                    <!-- Fecha de lanzamiento -->
+                    <div class="form-floating mb-4">
+                        <input type="date" name="lanzamiento" id="lanzamiento" class="form-control rounded-3 shadow-sm" required>
+                        <label for="lanzamiento">Fecha de lanzamiento</label>
+                    </div>
+
+                    <!-- Versión del sistema -->
+                    <div class="form-floating mb-4">
+                        <input type="text" name="version_sistema" id="version_sistema" class="form-control rounded-3 shadow-sm" placeholder="Versión del sistema" required>
+                        <label for="version_sistema">Versión del sistema</label>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-lg px-4 me-2 rounded-pill shadow" type="submit">
+                            <i class="fa fa-save me-1"></i> Guardar
+                        </button>
+                        <a href="/listaPlataformas/" class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow">
+                            <i class="fa fa-times me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validación con jQuery -->
+<script>
+    $("#frm_nueva_plataforma").validate({
+        rules: {
+            nombre: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            fabricante: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            lanzamiento: {
+                required: true,
+                date: true
+            },
+            version_sistema: {
+                required: true,
+                minlength: 1,
+                maxlength: 20
+            }
+        },
+        messages: {
+            nombre: {
+                required: "Ingrese el nombre de la plataforma",
+                minlength: "Debe tener al menos 2 caracteres",
+                maxlength: "No debe exceder los 50 caracteres"
+            },
+            fabricante: {
+                required: "Ingrese el nombre del fabricante",
+                minlength: "Debe tener al menos 2 caracteres",
+                maxlength: "No debe exceder los 50 caracteres"
+            },
+            lanzamiento: {
+                required: "Seleccione la fecha de lanzamiento",
+                date: "Ingrese una fecha válida"
+            },
+            version_sistema: {
+                required: "Ingrese la versión del sistema",
+                minlength: "Debe tener al menos 1 carácter",
+                maxlength: "No debe exceder los 20 caracteres"
+            }
+        }
+    });
+</script>
+
+<br><br><br>
+{% endblock %}
