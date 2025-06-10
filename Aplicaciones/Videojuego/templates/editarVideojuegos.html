@@ -1,0 +1,99 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block contenido %}
+
+<br><br><br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5" style="background-color: #feffff;">
+                <h2 class="text-center text-primary mb-4">Editar Videojuego</h2>
+                <hr class="mb-4">
+                <form id="frm_editar_videojuego" method="post" action="/procesarEdicionVideojuego/">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ videojuegoEditar.id }}">
+
+                    <div class="form-floating mb-4">
+                        <input type="text" name="titulo" id="titulo" class="form-control rounded-3 shadow-sm" value="{{ videojuegoEditar.titulo }}" placeholder="Título del videojuego" required>
+                        <label for="titulo">Título del videojuego</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="text" name="genero" id="genero" class="form-control rounded-3 shadow-sm" value="{{ videojuegoEditar.genero }}" placeholder="Género" required>
+                        <label for="genero">Género</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="date" name="fecha_lanzamiento" id="fecha_lanzamiento" class="form-control rounded-3 shadow-sm" value="{{ videojuegoEditar.fecha_lanzamiento|date:'Y-m-d' }}" required>
+                        <label for="fecha_lanzamiento">Fecha de lanzamiento</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <select name="plataforma_principal" id="plataforma_principal" class="form-select rounded-3 shadow-sm" required>
+                            <option value="">Seleccione una plataforma</option>
+                            {% for plataforma in plataformas %}
+                                <option value="{{ plataforma.id }}" {% if plataforma.id == videojuegoEditar.plataforma_principal.id %}selected{% endif %}>{{ plataforma.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="plataforma_principal">Plataforma principal</label>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg px-4 me-2 rounded-pill shadow">
+                            <i class="fa fa-save me-1"></i> Actualizar
+                        </button>
+                        <a href="/listaVideojuegos/" class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow">
+                            <i class="fa fa-times me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#frm_editar_videojuego").validate({
+        rules: {
+            "titulo": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            "genero": {
+                required: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            "fecha_lanzamiento": {
+                required: true,
+                date: true
+            },
+            "plataforma_principal": {
+                required: true
+            }
+        },
+        messages: {
+            "titulo": {
+                required: "Por favor, ingrese el título del videojuego",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 100 caracteres"
+            },
+            "genero": {
+                required: "Por favor, ingrese el género",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 50 caracteres"
+            },
+            "fecha_lanzamiento": {
+                required: "Por favor, seleccione una fecha de lanzamiento",
+                date: "Ingrese una fecha válida"
+            },
+            "plataforma_principal": {
+                required: "Por favor, seleccione una plataforma"
+            }
+        }
+    });
+</script>
+
+<br><br><br>
+{% endblock %}
